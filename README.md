@@ -1,0 +1,1 @@
+app.py contains flask framework through which i did crud operations on back end and add_student.html is used to insert the data,edit_student.html is used to update the data and students.html is the main html
