@@ -5,7 +5,7 @@ from flaskext.mysql import MySQL
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change to a strong, secret key
-
+#mysql database configurations
 mysql = MySQL(app)
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Nikki@3526'
@@ -13,18 +13,18 @@ app.config['MYSQL_DATABASE_DB'] = 'stu'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
 
 mysql.init_app(app)
-
+#route to home page
 @app.route('/')
 def index():
     return redirect(url_for('students'))
-
+#retrieving data
 @app.route('/students')
 def students():
     cursor = mysql.get_db().cursor()
     cursor.execute("SELECT * FROM students")
     data = cursor.fetchall()
     return render_template('students.html', students=data)
-
+#inserting data
 @app.route('/add_student', methods=['GET', 'POST'])
 def add_student():
     if request.method == 'POST':
@@ -37,7 +37,7 @@ def add_student():
         flash('Student added successfully!', 'success')
         return redirect(url_for('students'))
     return render_template('add_student.html')
-
+#updating data
 @app.route('/edit_student/<int:id>', methods=['GET', 'POST'])
 def edit_student(id):
     cursor = mysql.get_db().cursor()
@@ -53,7 +53,7 @@ def edit_student(id):
     cursor.execute("SELECT * FROM students WHERE id = %s", (id,))
     student = cursor.fetchone()
     return render_template('edit_student.html', student=student)
-
+#deleting data
 @app.route('/delete_student/<int:id>', methods=['POST'])
 def delete_student(id):
     cursor = mysql.get_db().cursor()
